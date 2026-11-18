@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcul de fréquence de rotation</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    background: #101410;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.application {
+    width: 100%;
+    max-width: 480px;
+    background: #1b241c;
+    padding: 25px;
+    border-radius: 22px;
+    border: 2px solid #354c35;
+    box-shadow: 0 10px 35px #0008;
+}
+
+h1 {
+    text-align: center;
+    color: #e5c52b;
+    font-size: 27px;
+    text-transform: uppercase;
+    margin-top: 5px;
+}
+
+.consigne {
+    text-align: center;
+    color: #c3d0c3;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #8ee28e;
+}
+
+select {
+    width: 100%;
+    height: 58px;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 12px;
+    border: 2px solid #4d774d;
+    background: #101810;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.diametre-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.valeur-diametre {
+    color: #f2d331;
+    font-size: 27px;
+    font-weight: bold;
+}
+
+input[type="range"] {
+    width: 100%;
+    height: 35px;
+    accent-color: #e5c52b;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.resultat {
+    background: #0d150e;
+    border: 3px solid #48c75b;
+    border-radius: 18px;
+    text-align: center;
+    padding: 25px 10px;
+    margin-top: 10px;
+}
+
+.resultat-titre {
+    color: #8ee28e;
+    font-size: 17px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.frequence {
+    font-size: clamp(48px, 13vw, 68px);
+    font-weight: 900;
+    color: #e5c52b;
+    margin: 15px 0 5px;
+    line-height: 1;
+}
+
+.unite {
+    font-size: 21px;
+    color: white;
+    font-weight: bold;
+}
+
+.information {
+    text-align: center;
+    color: #a9b8a9;
+    font-size: 13px;
+    margin-top: 25px;
+}
+
+.bouton-reset {
+    width: 100%;
+    height: 55px;
+    margin-top: 22px;
+    border: none;
+    border-radius: 12px;
+    background: #e5c52b;
+    color: #111811;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.bouton-reset:active {
+    transform: scale(0.97);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="application">
+
+    <h1>Calcul de fréquence de rotation</h1>
+
+    <p class="consigne">
+        1. Choisir la matière à usiner<br>
+        2. Choisir le diamètre de perçage
+    </p>
+
+    <label for="materiau">MATÉRIAU À USINER</label>
+
+    <select id="materiau">
+        <option value="22">Acier</option>
+        <option value="50">Bronze</option>
+        <option value="22">Fonte</option>
+        <option value="60">Laiton</option>
+    </select>
+
+    <div class="diametre-info">
+        <label for="diametre">DIAMÈTRE DE PERÇAGE</label>
+        <span class="valeur-diametre">
+            <span id="valeur">10</span> mm
+        </span>
+    </div>
+
+    <input
+        type="range"
+        id="diametre"
+        min="1"
+        max="50"
+        value="10"
+        step="1"
+    >
+
+    <div class="resultat">
+
+        <div class="resultat-titre">
+            Vitesse de rotation
+        </div>
+
+        <div class="frequence" id="resultat">
+            700
+        </div>
+
+        <div class="unite">TR / MIN</div>
+
+    </div>
+
+    <button class="bouton-reset" onclick="reinitialiser()">
+        ↺ Réinitialiser
+    </button>
+
+    <p class="information">
+        Calcul basé sur la vitesse de coupe du matériau.
+    </p>
+
+</div>
+
+<script>
+
+const materiau = document.getElementById("materiau");
+const diametre = document.getElementById("diametre");
+const valeur = document.getElementById("valeur");
+const resultat = document.getElementById("resultat");
+
+function calculer() {
+
+    let v = Number(materiau.value);
+    let d = Number(diametre.value);
+
+    let f = (1000 * v) / (Math.PI * d);
+
+    valeur.textContent = d;
+
+    resultat.textContent = Math.round(f);
+}
+
+function reinitialiser() {
+
+    materiau.selectedIndex = 0;
+    diametre.value = 10;
+
+    calculer();
+}
+
+materiau.addEventListener("change", calculer);
+diametre.addEventListener("input", calculer);
+
+calculer();
+
+</script>
+
+</body>
+</html>
